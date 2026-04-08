@@ -1,5 +1,0 @@
-Metadata-Version: 2.4
-Name: gtpc
-Version: 0.1.0
-Summary: GTP Control Plane packet builder and parser (GTPv1-C and GTPv2-C)
-Requires-Python: >=3.10
