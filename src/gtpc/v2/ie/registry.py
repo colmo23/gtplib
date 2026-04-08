@@ -1,0 +1,50 @@
+"""IE type → class registry for GTPv2 (mirrors Wireshark dissector table)."""
+
+from gtpc.v2.ie.base import IEv2
+from gtpc.v2.ie.typed import (
+    IMSIIE, CauseIE, RecoveryIE, APNIE, AMBRIE, EBIIE, IPAddressIE,
+    MEIIE, MSISDNIE, IndicationIE, PCOIE, PAAIE, BearerQoSIE,
+    FlowQoSIE, RATTypeIE, ServingNetworkIE, BearerTFTIE, ULIIE,
+    FTEIDIE, BearerContextIE, ChargingIDIE, ChargingCharsIE,
+    BearerFlagsIE, PDNTypeIE, PTIIE, UETimeZoneIE, APNRestrictionIE,
+    SelectionModeIE, FQCSIDIe, NodeTypeIE, FQDNIE, ARPIE, APCOIE,
+    PrivateExtIE,
+)
+from gtpc.v2 import constants as C
+
+IE_REGISTRY: dict[int, type[IEv2]] = {
+    C.IE_IMSI:              IMSIIE,
+    C.IE_CAUSE:             CauseIE,
+    C.IE_RECOVERY:          RecoveryIE,
+    C.IE_APN:               APNIE,
+    C.IE_AMBR:              AMBRIE,
+    C.IE_EBI:               EBIIE,
+    C.IE_IP_ADDRESS:        IPAddressIE,
+    C.IE_MEI:               MEIIE,
+    C.IE_MSISDN:            MSISDNIE,
+    C.IE_INDICATION:        IndicationIE,
+    C.IE_PCO:               PCOIE,
+    C.IE_PAA:               PAAIE,
+    C.IE_BEARER_QOS:        BearerQoSIE,
+    C.IE_FLOW_QOS:          FlowQoSIE,
+    C.IE_RAT_TYPE:          RATTypeIE,
+    C.IE_SERVING_NET:       ServingNetworkIE,
+    C.IE_BEARER_TFT:        BearerTFTIE,
+    C.IE_ULI:               ULIIE,
+    C.IE_F_TEID:            FTEIDIE,
+    C.IE_BEARER_CTX:        BearerContextIE,
+    C.IE_CHARGING_ID:       ChargingIDIE,
+    C.IE_CHARGING_CHARS:    ChargingCharsIE,
+    C.IE_BEARER_FLAGS:      BearerFlagsIE,
+    C.IE_PDN_TYPE:          PDNTypeIE,
+    C.IE_PTI:               PTIIE,
+    C.IE_UE_TIME_ZONE:      UETimeZoneIE,
+    C.IE_APN_RESTRICTION:   APNRestrictionIE,
+    C.IE_SEL_MODE:          SelectionModeIE,
+    C.IE_FQ_CSID:           FQCSIDIe,
+    C.IE_NODE_TYPE:         NodeTypeIE,
+    C.IE_FQDN:              FQDNIE,
+    C.IE_ARP:               ARPIE,
+    C.IE_APCO:              APCOIE,
+    C.IE_PRIVATE_EXT:       PrivateExtIE,
+}
