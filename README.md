@@ -111,7 +111,7 @@ msg.set_msisdn("353871234567")
 msg.set_rat_type(C.RAT_UTRAN)
 msg.set_imei_sv("35492910432898")
 msg.set_uli(glt=0, location=b"\x02\x72\xf2\x30\x04\xD2\x00\x05")
-msg.set_ms_timezone(tz_byte=0x40, dst=0)
+msg.set_ms_timezone(tz=0x40, dst=0)
 
 raw = msg.encode()
 print(f"Packet: {len(raw)} bytes")
@@ -447,6 +447,53 @@ pytest tests/ -v
 - Every typed IE with field-level assertions
 - Reference packet decoding from a real-world capture (`sample-hex.txt`)
 - Build-and-decode smoke test for every message type
+
+---
+
+## Example Script
+
+`examples/generate_samples.py` builds 68 sample packets across both protocol versions, writes them to `examples/sample_packets.hex`, and verifies every packet with an encode → decode → re-encode round-trip.
+
+```bash
+python3 examples/generate_samples.py [output_file]
+# Wrote 68 packets to examples/sample_packets.hex
+#   GTPv1-C packets : 21
+#   GTPv2-C packets : 47
+#   Total bytes     : 2643
+# All 68 packets verified (encode → decode → re-encode round-trip OK)
+```
+
+The hex file uses a simple text format — one entry per packet:
+
+```
+# GTPv1 Create PDP Context Request
+32100043000000000064000002720203...
+
+# GTPv2 Create Session Request
+480100...
+```
+
+Read a packet back with:
+
+```python
+from gtpc.utils.hexdump import from_hex
+from gtpc.v1.messages import decode_message
+
+with open("examples/sample_packets.hex") as f:
+    for line in f:
+        line = line.strip()
+        if line.startswith("#") or not line:
+            continue
+        msg = decode_message(from_hex(line))
+        print(msg)
+```
+
+### Packets generated
+
+| Protocol | Count | Message types |
+|----------|-------|---------------|
+| GTPv1-C  | 21    | Echo Req/Res, Create/Update/Delete PDP Ctx (Req+Res), Error Indication, PDU Notification, SGSN Context (Req/Res/Ack), Forward Relocation (Req/Res), Relocation Cancel, MBMS Session Start Req/Res, Data Record Transfer |
+| GTPv2-C  | 47    | Echo, Create/Modify/Delete Session, Create/Update/Delete Bearer, Bearer Resource Cmd, Modify/Delete Bearer Cmd, Release Access Bearers, Downlink Data Notification, Context (Req/Res/Ack), Forward Relocation (Req/Res/Complete/Ack), Detach/Suspend/Resume Notifications, PGW Restart, Stop Paging, Delete PDN Conn Set, Modify Access Bearers, MBMS Session Start/Stop, Trace Session Activation |
 
 ---
 
