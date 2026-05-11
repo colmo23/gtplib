@@ -8,6 +8,7 @@ Wire format (TS 29.274 §8.1):
 """
 
 import struct
+from typing import List
 from gtpc.v2 import constants as C
 
 
@@ -64,11 +65,11 @@ class IEv2:
         return f"{name}(inst={self.instance}, {self.value.hex()})"
 
 
-def decode_ies(buf: bytes) -> list[IEv2]:
+def decode_ies(buf: bytes) -> List[IEv2]:
     """Decode all IEs from a GTPv2 payload buffer."""
     from gtpc.v2.ie.registry import IE_REGISTRY
 
-    ies: list[IEv2] = []
+    ies: List[IEv2] = []
     offset = 0
     while offset + 4 <= len(buf):
         ie_type, length, instance = struct.unpack_from("!BHB", buf, offset)

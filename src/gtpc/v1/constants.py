@@ -3,6 +3,8 @@
 Source: 3GPP TS 29.060, cross-referenced with Wireshark packet-gtp.c.
 """
 
+from typing import Dict
+
 # ---------------------------------------------------------------------------
 # GTPv1-C Message Types
 # ---------------------------------------------------------------------------
@@ -97,7 +99,7 @@ MSG_END_MARKER                      = 254
 MSG_G_PDU                           = 255
 
 # Human-readable message type names (mirrors Wireshark val_to_str)
-MSG_TYPE_NAMES: dict[int, str] = {
+MSG_TYPE_NAMES: Dict[int, str] = {
     MSG_ECHO_REQ:                       "Echo Request",
     MSG_ECHO_RES:                       "Echo Response",
     MSG_VERSION_NOT_SUPPORTED:          "Version Not Supported",
@@ -215,7 +217,7 @@ IE_PACKET_TRANSFER_CMD      = 126   # GTP' Packet Transfer Command (TV, 1 byte)
 IE_CHARGING_ID              = 127   # last TV IE
 
 # Fixed lengths for TV IEs (bytes after the type byte)
-TV_LEN: dict[int, int] = {
+TV_LEN: Dict[int, int] = {
     IE_RESERVED:                0,
     IE_CAUSE:                   1,
     IE_IMSI:                    8,
@@ -354,7 +356,7 @@ IE_UP_FUNCTION_SEL_IND_FLAGS = 229
 IE_PRIVATE_EXT              = 255
 
 # Human-readable IE type names (mirrors Wireshark)
-IE_TYPE_NAMES: dict[int, str] = {
+IE_TYPE_NAMES: Dict[int, str] = {
     IE_CAUSE:                   "Cause",
     IE_IMSI:                    "IMSI",
     IE_RAI:                     "Routing Area Identity",

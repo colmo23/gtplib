@@ -1,5 +1,6 @@
 """IE type → class registry for GTPv1 (mirrors Wireshark dissector tables)."""
 
+from typing import Dict, Type
 from gtpc.v1.ie.base import IEv1
 from gtpc.v1.ie.tv import (
     CauseIE, IMSIE, RAIIE, TLLIIE, PTMSIIE, ReorderRequiredIE,
@@ -15,7 +16,7 @@ from gtpc.v1.ie.tlv import (
 )
 from gtpc.v1 import constants as C
 
-IE_REGISTRY: dict[int, type[IEv1]] = {
+IE_REGISTRY: Dict[int, Type[IEv1]] = {
     C.IE_CAUSE:                 CauseIE,
     C.IE_IMSI:                  IMSIE,
     C.IE_RAI:                   RAIIE,

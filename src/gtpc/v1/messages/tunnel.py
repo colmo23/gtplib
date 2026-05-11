@@ -12,6 +12,7 @@ from gtpc.v1.ie.tlv import (
     MSTimeZoneIE, IMEISVIe, RATTypeIE, CommonFlagsIE, APNRestrictionIE,
 )
 from gtpc.v1 import constants as C
+from typing import Optional
 
 
 class CreatePDPContextRequest(GTPv1Message):
@@ -104,27 +105,27 @@ class CreatePDPContextRequest(GTPv1Message):
 
     # Property accessors
     @property
-    def imsi(self) -> str | None:
+    def imsi(self) -> Optional[str]:
         ie = self.get_ie(C.IE_IMSI)
         return ie.digits if ie else None
 
     @property
-    def apn(self) -> str | None:
+    def apn(self) -> Optional[str]:
         ie = self.get_ie(C.IE_APN)
         return ie.apn if ie else None
 
     @property
-    def nsapi(self) -> int | None:
+    def nsapi(self) -> Optional[int]:
         ie = self.get_ie(C.IE_NSAPI)
         return ie.nsapi if ie else None
 
     @property
-    def teid_data(self) -> int | None:
+    def teid_data(self) -> Optional[int]:
         ie = self.get_ie(C.IE_TEID_DATA_1)
         return ie.teid if ie else None
 
     @property
-    def teid_control(self) -> int | None:
+    def teid_control(self) -> Optional[int]:
         ie = self.get_ie(C.IE_TEID_C_PLANE)
         return ie.teid if ie else None
 
@@ -178,7 +179,7 @@ class CreatePDPContextResponse(GTPv1Message):
         return self
 
     @property
-    def cause(self) -> int | None:
+    def cause(self) -> Optional[int]:
         ie = self.get_ie(C.IE_CAUSE)
         return ie.cause if ie else None
 
@@ -275,7 +276,7 @@ class UpdatePDPContextResponse(GTPv1Message):
         return self
 
     @property
-    def cause(self) -> int | None:
+    def cause(self) -> Optional[int]:
         ie = self.get_ie(C.IE_CAUSE)
         return ie.cause if ie else None
 
@@ -316,7 +317,7 @@ class DeletePDPContextResponse(GTPv1Message):
         return self
 
     @property
-    def cause(self) -> int | None:
+    def cause(self) -> Optional[int]:
         ie = self.get_ie(C.IE_CAUSE)
         return ie.cause if ie else None
 

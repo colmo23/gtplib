@@ -6,6 +6,7 @@ from gtpc.v2.ie.typed import (
     BearerQoSIE, AMBRIE, FQCSIDIe, RecoveryIE,
 )
 from gtpc.v2 import constants as C
+from typing import Optional
 
 
 class CreateBearerRequest(GTPv2Message):
@@ -57,7 +58,7 @@ class CreateBearerResponse(GTPv2Message):
         return self
 
     @property
-    def cause(self) -> int | None:
+    def cause(self) -> Optional[int]:
         ie = self.get_ie(C.IE_CAUSE)
         return ie.cause if ie else None
 
@@ -102,7 +103,7 @@ class UpdateBearerResponse(GTPv2Message):
         return self
 
     @property
-    def cause(self) -> int | None:
+    def cause(self) -> Optional[int]:
         ie = self.get_ie(C.IE_CAUSE)
         return ie.cause if ie else None
 
@@ -147,7 +148,7 @@ class DeleteBearerResponse(GTPv2Message):
         return self
 
     @property
-    def cause(self) -> int | None:
+    def cause(self) -> Optional[int]:
         ie = self.get_ie(C.IE_CAUSE)
         return ie.cause if ie else None
 
@@ -173,7 +174,7 @@ class DeletePDNConnectionSetResponse(GTPv2Message):
         return self
 
     @property
-    def cause(self) -> int | None:
+    def cause(self) -> Optional[int]:
         ie = self.get_ie(C.IE_CAUSE)
         return ie.cause if ie else None
 

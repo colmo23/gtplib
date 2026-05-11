@@ -1,7 +1,6 @@
 """GTPv2Message base class — wraps header + IE list."""
 
-from __future__ import annotations
-from typing import TypeVar, Type
+from typing import TypeVar, Type, List, Optional
 
 from gtpc.v2.header import GTPv2Header
 from gtpc.v2.ie.base import IEv2, decode_ies
@@ -17,13 +16,13 @@ class GTPv2Message:
     """
     msg_type: int = 0
 
-    def __init__(self, teid: int | None = None, seq_num: int = 0):
+    def __init__(self, teid: Optional[int] = None, seq_num: int = 0):
         self.header = GTPv2Header(
             msg_type=self.__class__.msg_type,
             teid=teid,
             seq_num=seq_num,
         )
-        self.ies: list[IEv2] = []
+        self.ies: List[IEv2] = []
 
     # ------------------------------------------------------------------
     # IE access helpers
@@ -33,13 +32,13 @@ class GTPv2Message:
         self.ies.append(ie)
         return self
 
-    def get_ie(self, ie_type: int, instance: int = 0) -> IEv2 | None:
+    def get_ie(self, ie_type: int, instance: int = 0) -> Optional[IEv2]:
         for ie in self.ies:
             if ie.ie_type == ie_type and ie.instance == instance:
                 return ie
         return None
 
-    def get_ies(self, ie_type: int) -> list[IEv2]:
+    def get_ies(self, ie_type: int) -> List[IEv2]:
         return [ie for ie in self.ies if ie.ie_type == ie_type]
 
     # ------------------------------------------------------------------

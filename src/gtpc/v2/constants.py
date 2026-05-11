@@ -3,6 +3,8 @@
 Source: 3GPP TS 29.274, cross-referenced with Wireshark packet-gtpv2.c.
 """
 
+from typing import Dict
+
 # ---------------------------------------------------------------------------
 # GTPv2-C Message Types
 # ---------------------------------------------------------------------------
@@ -122,7 +124,7 @@ MSG_MBMS_SESSION_UPDATE_RES                     = 234
 MSG_MBMS_SESSION_STOP_REQ                       = 235
 MSG_MBMS_SESSION_STOP_RES                       = 236
 
-MSG_TYPE_NAMES: dict[int, str] = {
+MSG_TYPE_NAMES: Dict[int, str] = {
     MSG_ECHO_REQ:                           "Echo Request",
     MSG_ECHO_RES:                           "Echo Response",
     MSG_VERSION_NOT_SUPPORTED:              "Version Not Supported",
@@ -360,7 +362,7 @@ IE_COUNTER                      = 199
 IE_MAP_USAGE                    = 200
 IE_PRIVATE_EXT                  = 255
 
-IE_TYPE_NAMES: dict[int, str] = {
+IE_TYPE_NAMES: Dict[int, str] = {
     IE_IMSI:                    "IMSI",
     IE_CAUSE:                   "Cause",
     IE_RECOVERY:                "Recovery",

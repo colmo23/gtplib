@@ -6,6 +6,7 @@ Two IE encoding formats (TS 29.060 §7.7):
 """
 
 import struct
+from typing import List
 from gtpc.v1 import constants as C
 
 
@@ -72,11 +73,11 @@ class IEv1:
         return f"{name}({self.value.hex()})"
 
 
-def decode_ies(buf: bytes) -> list[IEv1]:
+def decode_ies(buf: bytes) -> List[IEv1]:
     """Decode all IEs from a buffer, returning a list of IEv1 instances."""
     from gtpc.v1.ie.registry import IE_REGISTRY
 
-    ies: list[IEv1] = []
+    ies: List[IEv1] = []
     offset = 0
     while offset < len(buf):
         ie_type = buf[offset]

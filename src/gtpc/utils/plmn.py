@@ -1,10 +1,13 @@
 """PLMN (MCC/MNC) encoding/decoding.
 
+
 3-byte encoding per 3GPP TS 29.274 §8.21.5:
   Byte 1: MCC digit 2 | MCC digit 1
   Byte 2: MNC digit 3 | MCC digit 3   (MNC digit 3 = 0xF for 2-digit MNC)
   Byte 3: MNC digit 2 | MNC digit 1
 """
+
+from typing import Tuple
 
 
 def encode(mcc: str, mnc: str) -> bytes:
@@ -28,7 +31,7 @@ def encode(mcc: str, mnc: str) -> bytes:
     return bytes([b0, b1, b2])
 
 
-def decode(data: bytes) -> tuple[str, str]:
+def decode(data: bytes) -> Tuple[str, str]:
     """Decode 3-byte PLMN to (mcc, mnc) strings.
 
     >>> decode(bytes.fromhex("13f014"))

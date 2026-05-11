@@ -4,6 +4,7 @@ from gtpc.v2.messages.base import GTPv2Message
 from gtpc.v2.ie.typed import CauseIE, FTEIDIE, AMBRIE
 from gtpc.v2.ie.base import IEv2
 from gtpc.v2 import constants as C
+from typing import Optional
 
 
 def _raw_ie(ie_type: int, data: bytes, instance: int = 0) -> IEv2:
@@ -62,7 +63,7 @@ class MBMSSessionStartResponse(GTPv2Message):
         return self
 
     @property
-    def cause(self) -> int | None:
+    def cause(self) -> Optional[int]:
         ie = self.get_ie(C.IE_CAUSE)
         return ie.cause if ie else None
 
@@ -103,7 +104,7 @@ class MBMSSessionUpdateResponse(GTPv2Message):
         return self
 
     @property
-    def cause(self) -> int | None:
+    def cause(self) -> Optional[int]:
         ie = self.get_ie(C.IE_CAUSE)
         return ie.cause if ie else None
 
@@ -128,6 +129,6 @@ class MBMSSessionStopResponse(GTPv2Message):
         return self
 
     @property
-    def cause(self) -> int | None:
+    def cause(self) -> Optional[int]:
         ie = self.get_ie(C.IE_CAUSE)
         return ie.cause if ie else None

@@ -3,6 +3,7 @@
 from gtpc.v2.messages.base import GTPv2Message
 from gtpc.v2.ie.typed import CauseIE, RecoveryIE, BearerContextIE, FQCSIDIe, FTEIDIE
 from gtpc.v2 import constants as C
+from typing import Optional
 
 
 class UpdatePDNConnectionSetRequest(GTPv2Message):
@@ -30,7 +31,7 @@ class UpdatePDNConnectionSetResponse(GTPv2Message):
         return self
 
     @property
-    def cause(self) -> int | None:
+    def cause(self) -> Optional[int]:
         ie = self.get_ie(C.IE_CAUSE)
         return ie.cause if ie else None
 
@@ -68,6 +69,6 @@ class ModifyAccessBearersResponse(GTPv2Message):
         return self
 
     @property
-    def cause(self) -> int | None:
+    def cause(self) -> Optional[int]:
         ie = self.get_ie(C.IE_CAUSE)
         return ie.cause if ie else None

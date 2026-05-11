@@ -1,5 +1,6 @@
 """Message type → class registry and top-level decode for GTPv2-C."""
 
+from typing import Dict, Type
 from gtpc.v2.messages.base import GTPv2Message
 from gtpc.v2.header import GTPv2Header
 from gtpc.v2.ie.base import decode_ies
@@ -67,7 +68,7 @@ from gtpc.v2.messages.mbms import (
     MBMSSessionStopRequest, MBMSSessionStopResponse,
 )
 
-MSG_REGISTRY: dict[int, type[GTPv2Message]] = {
+MSG_REGISTRY: Dict[int, Type[GTPv2Message]] = {
     C.MSG_ECHO_REQ:                                 EchoRequest,
     C.MSG_ECHO_RES:                                 EchoResponse,
     C.MSG_VERSION_NOT_SUPPORTED:                    VersionNotSupported,

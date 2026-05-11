@@ -3,6 +3,7 @@
 from gtpc.v1.messages.base import GTPv1Message
 from gtpc.v1.ie.tv import RecoveryIE
 from gtpc.v1 import constants as C
+from typing import Optional
 
 
 class EchoRequest(GTPv1Message):
@@ -21,7 +22,7 @@ class EchoResponse(GTPv1Message):
         return self
 
     @property
-    def recovery(self) -> int | None:
+    def recovery(self) -> Optional[int]:
         ie = self.get_ie(C.IE_RECOVERY)
         return ie.restart_counter if ie else None
 

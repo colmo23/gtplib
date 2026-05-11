@@ -9,6 +9,7 @@ from gtpc.v1.ie.tlv import (
 )
 from gtpc.v1.ie.base import IEv1
 from gtpc.v1 import constants as C
+from typing import Optional, List
 
 
 class ErrorIndication(GTPv1Message):
@@ -56,7 +57,7 @@ class PDUNotificationResponse(GTPv1Message):
         return self
 
     @property
-    def cause(self) -> int | None:
+    def cause(self) -> Optional[int]:
         ie = self.get_ie(C.IE_CAUSE)
         return ie.cause if ie else None
 
@@ -93,7 +94,7 @@ class PDUNotificationRejectResponse(GTPv1Message):
 class SupportedExtensionHeadersNotification(GTPv1Message):
     msg_type = C.MSG_SUPPORTED_EXT_HEADER_NOTIFY
 
-    def set_ext_header_list(self, header_types: list[int]) -> "SupportedExtensionHeadersNotification":
+    def set_ext_header_list(self, header_types: List[int]) -> "SupportedExtensionHeadersNotification":
         # IE 141: Extension Header Type List — TLV with raw list of type bytes
         ie = IEv1.__new__(IEv1)
         ie.ie_type = C.IE_EXT_HEADER_TYPE_LIST

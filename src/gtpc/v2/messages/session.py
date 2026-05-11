@@ -10,6 +10,7 @@ from gtpc.v2.ie.typed import (
     NodeTypeIE, FQDNIE, ARPIE, APCOIE,
 )
 from gtpc.v2 import constants as C
+from typing import Optional, List
 
 
 class CreateSessionRequest(GTPv2Message):
@@ -114,22 +115,22 @@ class CreateSessionRequest(GTPv2Message):
 
     # Accessors
     @property
-    def imsi(self) -> str | None:
+    def imsi(self) -> Optional[str]:
         ie = self.get_ie(C.IE_IMSI)
         return ie.digits if ie else None
 
     @property
-    def apn(self) -> str | None:
+    def apn(self) -> Optional[str]:
         ie = self.get_ie(C.IE_APN)
         return ie.apn if ie else None
 
     @property
-    def pdn_type(self) -> int | None:
+    def pdn_type(self) -> Optional[int]:
         ie = self.get_ie(C.IE_PDN_TYPE)
         return ie.pdn_type if ie else None
 
     @property
-    def bearer_contexts(self) -> list[BearerContextIE]:
+    def bearer_contexts(self) -> List[BearerContextIE]:
         return self.get_ies(C.IE_BEARER_CTX)
 
 
@@ -182,7 +183,7 @@ class CreateSessionResponse(GTPv2Message):
         return self
 
     @property
-    def cause(self) -> int | None:
+    def cause(self) -> Optional[int]:
         ie = self.get_ie(C.IE_CAUSE)
         return ie.cause if ie else None
 
@@ -243,7 +244,7 @@ class ModifyBearerResponse(GTPv2Message):
         return self
 
     @property
-    def cause(self) -> int | None:
+    def cause(self) -> Optional[int]:
         ie = self.get_ie(C.IE_CAUSE)
         return ie.cause if ie else None
 
@@ -292,7 +293,7 @@ class DeleteSessionResponse(GTPv2Message):
         return self
 
     @property
-    def cause(self) -> int | None:
+    def cause(self) -> Optional[int]:
         ie = self.get_ie(C.IE_CAUSE)
         return ie.cause if ie else None
 

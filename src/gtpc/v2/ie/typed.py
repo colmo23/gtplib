@@ -5,6 +5,7 @@ Mirrors Wireshark's packet-gtpv2.c dissector functions.
 
 import struct
 import socket
+from typing import Optional, List
 from gtpc.v2.ie.base import IEv2
 from gtpc.v2 import constants as C
 from gtpc.utils import bcd, plmn
@@ -521,7 +522,7 @@ class FTEIDIE(IEv2):
     ie_type = C.IE_F_TEID
 
     def __init__(self, interface_type: int = 0, teid: int = 0,
-                 ipv4: str | None = None, ipv6: str | None = None,
+                 ipv4: Optional[str] = None, ipv6: Optional[str] = None,
                  instance: int = 0):
         self.interface_type = interface_type
         self.teid = teid
@@ -572,8 +573,8 @@ class FTEIDIE(IEv2):
 class BearerContextIE(IEv2):
     ie_type = C.IE_BEARER_CTX
 
-    def __init__(self, ies: list | None = None, instance: int = 0):
-        self.grouped_ies: list[IEv2] = ies or []
+    def __init__(self, ies: Optional[list] = None, instance: int = 0):
+        self.grouped_ies: List[IEv2] = ies or []
         self.instance = instance
 
     def _encode_value(self) -> bytes:
@@ -587,7 +588,7 @@ class BearerContextIE(IEv2):
         self.grouped_ies.append(ie)
         return self
 
-    def get_ie(self, ie_type: int, instance: int = 0) -> "IEv2 | None":
+    def get_ie(self, ie_type: int, instance: int = 0) -> Optional["IEv2"]:
         for ie in self.grouped_ies:
             if ie.ie_type == ie_type and ie.instance == instance:
                 return ie
@@ -745,7 +746,7 @@ class FQCSIDIe(IEv2):
     ie_type = C.IE_FQ_CSID
 
     def __init__(self, node_id: bytes = b"\x00\x00\x00\x00",
-                 csids: list[int] | None = None, instance: int = 0):
+                 csids: Optional[List[int]] = None, instance: int = 0):
         self.node_id = node_id   # 4 bytes IPv4 or 16 bytes IPv6
         self.csids = csids or []
         self.instance = instance

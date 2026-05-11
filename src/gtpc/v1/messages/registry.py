@@ -1,5 +1,6 @@
 """Message type → class registry and top-level decode for GTPv1-C."""
 
+from typing import Dict, Type
 from gtpc.v1.messages.base import GTPv1Message
 from gtpc.v1.header import GTPv1Header
 from gtpc.v1.ie.base import decode_ies
@@ -48,7 +49,7 @@ from gtpc.v1.messages.mbms import (
 )
 from gtpc.v1.messages.cdr import DataRecordTransferRequest, DataRecordTransferResponse
 
-MSG_REGISTRY: dict[int, type[GTPv1Message]] = {
+MSG_REGISTRY: Dict[int, Type[GTPv1Message]] = {
     C.MSG_ECHO_REQ:                         EchoRequest,
     C.MSG_ECHO_RES:                         EchoResponse,
     C.MSG_VERSION_NOT_SUPPORTED:            VersionNotSupported,

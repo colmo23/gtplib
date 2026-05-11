@@ -21,13 +21,14 @@ Wire format (3GPP TS 29.060 §6):
 
 import struct
 from dataclasses import dataclass, field
+from typing import Optional, Tuple
 
 
 @dataclass
 class GTPv1Header:
     msg_type: int = 0
     teid: int = 0
-    seq_num: int | None = None   # None → S flag = 0 (and 8-11 omitted)
+    seq_num: Optional[int] = None   # None → S flag = 0 (and 8-11 omitted)
     npdu: int = 0
     next_ext_hdr: int = 0
     e_flag: bool = False
@@ -64,7 +65,7 @@ class GTPv1Header:
         return hdr
 
     @classmethod
-    def decode(cls, buf: bytes) -> tuple["GTPv1Header", int]:
+    def decode(cls, buf: bytes) -> Tuple["GTPv1Header", int]:
         """Decode header from buf, return (header, offset_after_header)."""
         if len(buf) < 8:
             raise ValueError(f"Buffer too short for GTPv1 header: {len(buf)}")

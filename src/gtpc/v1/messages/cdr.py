@@ -4,6 +4,7 @@ from gtpc.v1.messages.base import GTPv1Message
 from gtpc.v1.ie.tv import CauseIE
 from gtpc.v1.ie.base import IEv1
 from gtpc.v1 import constants as C
+from typing import List
 
 
 class DataRecordTransferRequest(GTPv1Message):
@@ -32,7 +33,7 @@ class DataRecordTransferResponse(GTPv1Message):
         self.add_ie(CauseIE(cause))
         return self
 
-    def set_requests_responded(self, seq_nums: list[int]) -> "DataRecordTransferResponse":
+    def set_requests_responded(self, seq_nums: List[int]) -> "DataRecordTransferResponse":
         import struct
         data = b"".join(struct.pack("!H", s) for s in seq_nums)
         ie = IEv1.__new__(IEv1)

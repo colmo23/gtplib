@@ -3,6 +3,7 @@
 from gtpc.v2.messages.base import GTPv2Message
 from gtpc.v2.ie.typed import CauseIE, EBIIE, FTEIDIE, RecoveryIE, IMSIIE
 from gtpc.v2 import constants as C
+from typing import Optional
 
 
 class CreateForwardingTunnelRequest(GTPv2Message):
@@ -104,7 +105,7 @@ class ReleaseAccessBearersResponse(GTPv2Message):
         return self
 
     @property
-    def cause(self) -> int | None:
+    def cause(self) -> Optional[int]:
         ie = self.get_ie(C.IE_CAUSE)
         return ie.cause if ie else None
 
