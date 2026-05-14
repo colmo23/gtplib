@@ -1,8 +1,10 @@
 """GTPv1-C MBMS (Multimedia Broadcast/Multicast Service) messages (types 96-121)."""
 
 from gtpc.v1.messages.base import GTPv1Message
-from gtpc.v1.ie.tv import IMSIE, CauseIE, NSAPIIE
-from gtpc.v1.ie.tlv import GSNAddressIE
+from gtpc.v1.ie.tv import (
+    IMSIE, CauseIE, NSAPIIE, RAIIE, TEIDCPlaneIE, ChargingIDIE, RecoveryIE,
+)
+from gtpc.v1.ie.tlv import EndUserAddressIE, APNIE, MSISDNIE, GSNAddressIE
 from gtpc.v1.ie.base import IEv1
 from gtpc.v1 import constants as C
 
@@ -25,12 +27,13 @@ class MBMSNotificationRequest(GTPv1Message):
         self.add_ie(NSAPIIE(nsapi))
         return self
 
-    def set_end_user_address(self, data: bytes) -> "MBMSNotificationRequest":
-        self.add_ie(_raw_ie(C.IE_END_USER_ADDRESS, data))
+    def set_end_user_address(self, pdp_type_org: int, pdp_type_num: int,
+                              address: bytes = b"") -> "MBMSNotificationRequest":
+        self.add_ie(EndUserAddressIE(pdp_type_org, pdp_type_num, address))
         return self
 
-    def set_apn(self, data: bytes) -> "MBMSNotificationRequest":
-        self.add_ie(_raw_ie(C.IE_APN, data))
+    def set_apn(self, apn: str) -> "MBMSNotificationRequest":
+        self.add_ie(APNIE(apn))
         return self
 
     def set_ggsn_address(self, addr: bytes) -> "MBMSNotificationRequest":
@@ -53,8 +56,8 @@ class MBMSNotificationRejectRequest(GTPv1Message):
         self.add_ie(CauseIE(cause))
         return self
 
-    def set_teid_control(self, data: bytes) -> "MBMSNotificationRejectRequest":
-        self.add_ie(_raw_ie(C.IE_TEID_C_PLANE, data))
+    def set_teid_control(self, teid: int) -> "MBMSNotificationRejectRequest":
+        self.add_ie(TEIDCPlaneIE(teid))
         return self
 
 
@@ -73,29 +76,29 @@ class CreateMBMSContextRequest(GTPv1Message):
         self.add_ie(IMSIE(digits))
         return self
 
-    def set_rai(self, data: bytes) -> "CreateMBMSContextRequest":
-        self.add_ie(_raw_ie(C.IE_RAI, data))
+    def set_rai(self, mcc: str, mnc: str, lac: int, rac: int) -> "CreateMBMSContextRequest":
+        self.add_ie(RAIIE(mcc, mnc, lac, rac))
         return self
 
     def set_recovery(self, rc: int) -> "CreateMBMSContextRequest":
-        from gtpc.v1.ie.tv import RecoveryIE
         self.add_ie(RecoveryIE(rc))
         return self
 
-    def set_end_user_address(self, data: bytes) -> "CreateMBMSContextRequest":
-        self.add_ie(_raw_ie(C.IE_END_USER_ADDRESS, data))
+    def set_end_user_address(self, pdp_type_org: int, pdp_type_num: int,
+                              address: bytes = b"") -> "CreateMBMSContextRequest":
+        self.add_ie(EndUserAddressIE(pdp_type_org, pdp_type_num, address))
         return self
 
-    def set_apn(self, data: bytes) -> "CreateMBMSContextRequest":
-        self.add_ie(_raw_ie(C.IE_APN, data))
+    def set_apn(self, apn: str) -> "CreateMBMSContextRequest":
+        self.add_ie(APNIE(apn))
         return self
 
     def set_sgsn_address(self, addr: bytes) -> "CreateMBMSContextRequest":
         self.add_ie(GSNAddressIE(addr))
         return self
 
-    def set_msisdn(self, data: bytes) -> "CreateMBMSContextRequest":
-        self.add_ie(_raw_ie(C.IE_MSISDN, data))
+    def set_msisdn(self, digits: str) -> "CreateMBMSContextRequest":
+        self.add_ie(MSISDNIE(digits))
         return self
 
 
@@ -107,16 +110,15 @@ class CreateMBMSContextResponse(GTPv1Message):
         return self
 
     def set_recovery(self, rc: int) -> "CreateMBMSContextResponse":
-        from gtpc.v1.ie.tv import RecoveryIE
         self.add_ie(RecoveryIE(rc))
         return self
 
-    def set_teid_control(self, data: bytes) -> "CreateMBMSContextResponse":
-        self.add_ie(_raw_ie(C.IE_TEID_C_PLANE, data))
+    def set_teid_control(self, teid: int) -> "CreateMBMSContextResponse":
+        self.add_ie(TEIDCPlaneIE(teid))
         return self
 
-    def set_charging_id(self, data: bytes) -> "CreateMBMSContextResponse":
-        self.add_ie(_raw_ie(C.IE_CHARGING_ID, data))
+    def set_charging_id(self, cid: int) -> "CreateMBMSContextResponse":
+        self.add_ie(ChargingIDIE(cid))
         return self
 
     def set_ggsn_address(self, addr: bytes) -> "CreateMBMSContextResponse":
@@ -167,12 +169,13 @@ class DeleteMBMSContextResponse(GTPv1Message):
 class MBMSRegistrationRequest(GTPv1Message):
     msg_type = C.MSG_MBMS_REGIST_REQ
 
-    def set_end_user_address(self, data: bytes) -> "MBMSRegistrationRequest":
-        self.add_ie(_raw_ie(C.IE_END_USER_ADDRESS, data))
+    def set_end_user_address(self, pdp_type_org: int, pdp_type_num: int,
+                              address: bytes = b"") -> "MBMSRegistrationRequest":
+        self.add_ie(EndUserAddressIE(pdp_type_org, pdp_type_num, address))
         return self
 
-    def set_apn(self, data: bytes) -> "MBMSRegistrationRequest":
-        self.add_ie(_raw_ie(C.IE_APN, data))
+    def set_apn(self, apn: str) -> "MBMSRegistrationRequest":
+        self.add_ie(APNIE(apn))
         return self
 
     def set_sgsn_address(self, addr: bytes) -> "MBMSRegistrationRequest":
@@ -191,12 +194,13 @@ class MBMSRegistrationResponse(GTPv1Message):
 class MBMSDeRegistrationRequest(GTPv1Message):
     msg_type = C.MSG_MBMS_DEREGIST_REQ
 
-    def set_end_user_address(self, data: bytes) -> "MBMSDeRegistrationRequest":
-        self.add_ie(_raw_ie(C.IE_END_USER_ADDRESS, data))
+    def set_end_user_address(self, pdp_type_org: int, pdp_type_num: int,
+                              address: bytes = b"") -> "MBMSDeRegistrationRequest":
+        self.add_ie(EndUserAddressIE(pdp_type_org, pdp_type_num, address))
         return self
 
-    def set_apn(self, data: bytes) -> "MBMSDeRegistrationRequest":
-        self.add_ie(_raw_ie(C.IE_APN, data))
+    def set_apn(self, apn: str) -> "MBMSDeRegistrationRequest":
+        self.add_ie(APNIE(apn))
         return self
 
 
@@ -212,16 +216,16 @@ class MBMSSessionStartRequest(GTPv1Message):
     msg_type = C.MSG_MBMS_SESSION_START_REQ
 
     def set_recovery(self, rc: int) -> "MBMSSessionStartRequest":
-        from gtpc.v1.ie.tv import RecoveryIE
         self.add_ie(RecoveryIE(rc))
         return self
 
-    def set_end_user_address(self, data: bytes) -> "MBMSSessionStartRequest":
-        self.add_ie(_raw_ie(C.IE_END_USER_ADDRESS, data))
+    def set_end_user_address(self, pdp_type_org: int, pdp_type_num: int,
+                              address: bytes = b"") -> "MBMSSessionStartRequest":
+        self.add_ie(EndUserAddressIE(pdp_type_org, pdp_type_num, address))
         return self
 
-    def set_apn(self, data: bytes) -> "MBMSSessionStartRequest":
-        self.add_ie(_raw_ie(C.IE_APN, data))
+    def set_apn(self, apn: str) -> "MBMSSessionStartRequest":
+        self.add_ie(APNIE(apn))
         return self
 
     def set_ggsn_address(self, addr: bytes) -> "MBMSSessionStartRequest":
@@ -249,7 +253,6 @@ class MBMSSessionStartResponse(GTPv1Message):
         return self
 
     def set_recovery(self, rc: int) -> "MBMSSessionStartResponse":
-        from gtpc.v1.ie.tv import RecoveryIE
         self.add_ie(RecoveryIE(rc))
         return self
 
@@ -261,12 +264,13 @@ class MBMSSessionStartResponse(GTPv1Message):
 class MBMSSessionStopRequest(GTPv1Message):
     msg_type = C.MSG_MBMS_SESSION_STOP_REQ
 
-    def set_end_user_address(self, data: bytes) -> "MBMSSessionStopRequest":
-        self.add_ie(_raw_ie(C.IE_END_USER_ADDRESS, data))
+    def set_end_user_address(self, pdp_type_org: int, pdp_type_num: int,
+                              address: bytes = b"") -> "MBMSSessionStopRequest":
+        self.add_ie(EndUserAddressIE(pdp_type_org, pdp_type_num, address))
         return self
 
-    def set_apn(self, data: bytes) -> "MBMSSessionStopRequest":
-        self.add_ie(_raw_ie(C.IE_APN, data))
+    def set_apn(self, apn: str) -> "MBMSSessionStopRequest":
+        self.add_ie(APNIE(apn))
         return self
 
 
@@ -281,12 +285,13 @@ class MBMSSessionStopResponse(GTPv1Message):
 class MBMSSessionUpdateRequest(GTPv1Message):
     msg_type = C.MSG_MBMS_SESSION_UPDATE_REQ
 
-    def set_end_user_address(self, data: bytes) -> "MBMSSessionUpdateRequest":
-        self.add_ie(_raw_ie(C.IE_END_USER_ADDRESS, data))
+    def set_end_user_address(self, pdp_type_org: int, pdp_type_num: int,
+                              address: bytes = b"") -> "MBMSSessionUpdateRequest":
+        self.add_ie(EndUserAddressIE(pdp_type_org, pdp_type_num, address))
         return self
 
-    def set_apn(self, data: bytes) -> "MBMSSessionUpdateRequest":
-        self.add_ie(_raw_ie(C.IE_APN, data))
+    def set_apn(self, apn: str) -> "MBMSSessionUpdateRequest":
+        self.add_ie(APNIE(apn))
         return self
 
     def set_tmgi(self, data: bytes) -> "MBMSSessionUpdateRequest":
